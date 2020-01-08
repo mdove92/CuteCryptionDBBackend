@@ -32,6 +32,7 @@ public class MainController {
 	}
 
 	// Method for handling the get request to "/" route
+	@CrossOrigin(origins = "https://cutecryption.herokuapp.com/")
 	@RequestMapping("/")
 	public String index() {
 		StringBuilder builder = new StringBuilder();
@@ -54,7 +55,9 @@ public class MainController {
 		return builder.toString();
 	}
 
+
 	// Method for handling post calls to add templates to mongo db
+	@CrossOrigin(origins = "https://cutecryption.herokuapp.com/")
 	@PostMapping("/")
 	public ResponseEntity postController(@RequestBody TemplateRequest templateRequest) {
 
