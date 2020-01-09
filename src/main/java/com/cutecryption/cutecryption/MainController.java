@@ -4,6 +4,7 @@ import org.bson.Document;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import com.mongodb.*;
 import com.mongodb.client.*;
 import com.mongodb.client.MongoClient;
@@ -25,9 +26,12 @@ public class MainController {
 
     // Constructor for the template controller class
     public MainController() {
+        String connectionString = "mongodb+srv://CuteCryption:<PASSWORD>@cluster0-v5biy.mongodb.net/test?retryWrites=true&w=majority";
+        if (System.getenv().containsValue("CONNECTION_STRING")) {
+            connectionString = System.getenv().get("CONNECTION_STRING");
+        }
         // Here we pass in our connection string to our mongo db cluster
-        final MongoClient mongoClient = MongoClients.create(
-                "mongodb+srv://CuteCryption:<password>@cluster0-v5biy.mongodb.net/test?retryWrites=true&w=majority");
+        final MongoClient mongoClient = MongoClients.create(connectionString);
         final MongoDatabase database = mongoClient.getDatabase("test");
 
         this.templateCollection = database.getCollection("templateCollection");
@@ -60,7 +64,7 @@ public class MainController {
 
     // Method for handling post calls to add templates to mongo db
     @PostMapping("/")
-    public ResponseEntity postController(@RequestBody final TemplateRequest templateRequest) {
+    public ResponseEntity postController(@RequestBody com.cutecryption.cutecryption.TemplateRequest templateRequest) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
@@ -71,6 +75,41 @@ public class MainController {
             // If the result is non-null, insert into collection
             this.templateCollection.insertOne(requestDoc);
             return new ResponseEntity("", headers, HttpStatus.OK);
+        } else {
+            return null;
+        }
+    }
+}
+
+// Template request class to represent the object passed into the template
+// controller
+public class TemplateRequest {
+
+    // Template name property
+    public String TemplateName;
+
+    // Template contents property
+    public String TemplateContents;
+
+    // Template creator property
+    public String TemplateCreator;
+
+    // Template created time property
+    private final Date CreatedTime;
+
+    // Constructor for the template request object
+    public TemplateRequest() {
+        this.CreatedTime = new Date();
+    }
+
+    // Method to return a document object that contains all the values from the
+    // request object properties
+    public Document ToDocument() {
+        // If all the required fields have contents, generate a document object
+        // containing all those fields
+        if (TemplateContents != null && TemplateContents != null && TemplateCreator != null) {
+            return new Document("Contents", this.TemplateContents).append("Name", this.TemplateName)
+                    .append("Creator", this.TemplateCreator).append("Created", this.CreatedTime.toString());
         } else {
             return null;
         }
