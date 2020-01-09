@@ -83,7 +83,7 @@ public class MainController {
 
 // Template request class to represent the object passed into the template
 // controller
-public class TemplateRequest {
+final class TemplateRequest {
 
     // Template name property
     public String TemplateName;
