@@ -27,7 +27,7 @@ public class MainController {
     // Constructor for the template controller class
     public MainController() {
         String connectionString = "mongodb+srv://CuteCryption:<PASSWORD>@cluster0-v5biy.mongodb.net/test?retryWrites=true&w=majority";
-        if (System.getenv().containsValue("CONNECTION_STRING")) {
+        if (System.getenv().containsKey("CONNECTION_STRING")) {
             connectionString = System.getenv().get("CONNECTION_STRING");
         }
         // Here we pass in our connection string to our mongo db cluster
