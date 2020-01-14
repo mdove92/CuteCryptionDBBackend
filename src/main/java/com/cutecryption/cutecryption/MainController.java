@@ -22,7 +22,7 @@ public class MainController {
     private final MongoCollection<Document> templateCollection;
     // Constructor for the template controller class
     public MainController() {
-        String connectionString = "mongodb+srv://CuteCryption:t772G8NSb%40#f@cluster0-v5biy.mongodb.net/test?retryWrites=true&w=majority";
+        String connectionString = "mongodb+srv://CuteCryption:<pw>@cluster0-v5biy.mongodb.net/test?retryWrites=true&w=majority";
         if (System.getenv().containsKey("CONNECTION_STRING")) {
             connectionString = System.getenv().get("CONNECTION_STRING");
         }
