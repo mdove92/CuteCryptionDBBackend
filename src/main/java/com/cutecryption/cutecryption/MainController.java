@@ -1,4 +1,5 @@
 package com.cutecryption.cutecryption;
+
 import org.bson.Document;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.Date;
@@ -15,11 +16,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 // Controller class for our template controller
 @RestController
 public class MainController {
     // Private collection variable for storing contents of our template collection
     private final MongoCollection<Document> templateCollection;
+
     // Constructor for the template controller class
     public MainController() {
         String connectionString = "mongodb+srv://CuteCryption:<pw>@cluster0-v5biy.mongodb.net/test?retryWrites=true&w=majority";
@@ -31,6 +34,7 @@ public class MainController {
         final MongoDatabase database = mongoClient.getDatabase("morereal");
         this.templateCollection = database.getCollection("templateCollection");
     }
+
     // Method for handling the get request to "/" route
     @RequestMapping("/")
     public ResponseEntity index(@RequestParam String templateName, @RequestParam String email) {
@@ -45,13 +49,14 @@ public class MainController {
         }
         String jsonData = StreamSupport.stream(myDoc.spliterator(), false).map(Document::toJson)
                 .collect(Collectors.joining(", ", "[", "]"));
-        if(email != null && !email.isEmpty()){
+        if (email != null && email != "") {
             jsonData = jsonData.replace("##USEREMAIL##", email);
         }
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
         return new ResponseEntity(jsonData, headers, HttpStatus.OK);
     }
+
     // Method for handling post calls to add templates to mongo db
     @PostMapping("/")
     public ResponseEntity postController(@RequestBody com.cutecryption.cutecryption.TemplateRequest templateRequest) {
@@ -69,6 +74,7 @@ public class MainController {
         }
     }
 }
+
 // Template request class to represent the object passed into the template
 // controller
 final class TemplateRequest {
@@ -80,10 +86,12 @@ final class TemplateRequest {
     public String TemplateCreator;
     // Template created time property
     private final Date CreatedTime;
+
     // Constructor for the template request object
     public TemplateRequest() {
         this.CreatedTime = new Date();
     }
+
     // Method to return a document object that contains all the values from the
     // request object properties
     public Document ToDocument() {
