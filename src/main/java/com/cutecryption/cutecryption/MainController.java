@@ -40,7 +40,7 @@ public class MainController {
     public ResponseEntity index(@RequestParam String templateName, @RequestParam String email) {
         // This method gets all entries from "Template Collection"
         final FindIterable<Document> myDoc;
-        if (templateName == null || templateName.isBlank()) {
+        if (templateName == null || templateName == "") {
             myDoc = this.templateCollection.find();
         } else {
             BasicDBObject eqQuery = new BasicDBObject();
