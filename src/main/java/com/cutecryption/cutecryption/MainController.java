@@ -44,9 +44,24 @@ public class MainController {
         final MongoDatabase database = mongoClient.getDatabase("morereal");
         this.templateCollection = database.getCollection("templateCollection");
     }
+
+    // Method for sending messages from browser
+    @RequestMapping(value="/", method = RequestMethod.OPTIONS)
+     ResponseEntity<?> rootOptions() 
+     {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Headers", "*");
+       
+        return ResponseEntity.ok()
+        .allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS)
+        .headers(headers).build();
+		
+     }
+
     // Method for sending messages from browser
     @RequestMapping(value="/sendMail", method = RequestMethod.OPTIONS)
-     ResponseEntity<?> collectionOptions() 
+     ResponseEntity<?> collectionOptions(@RequestBody MailRequest messageRequest) 
      {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
