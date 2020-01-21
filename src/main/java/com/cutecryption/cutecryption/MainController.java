@@ -2,6 +2,14 @@ package com.cutecryption.cutecryption;
 
 import org.bson.Document;
 import org.springframework.web.bind.annotation.RestController;
+
+import microsoft.exchange.webservices.data.core.ExchangeService;
+import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
+import microsoft.exchange.webservices.data.core.service.item.EmailMessage;
+import microsoft.exchange.webservices.data.credential.ExchangeCredentials;
+import microsoft.exchange.webservices.data.credential.WebCredentials;
+import microsoft.exchange.webservices.data.property.complex.MessageBody;
+
 import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -73,6 +81,46 @@ public class MainController {
             return null;
         }
     }
+    @PostMapping("/sendMail")
+    public ResponseEntity mailFunction(@RequestBody MailRequest messageRequest) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "*");
+        String userName = "userName";
+        String password = "password";
+
+        if (System.getenv().containsKey("EMAIL_USERNAME")) {
+            userName = System.getenv().get("EMAIL_USERNAME");
+        }
+
+        if (System.getenv().containsKey("EMAIL_PASSWORD")) {
+            password = System.getenv().get("EMAIL_PASSWORD");
+        }
+        final ExchangeService service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
+        final ExchangeCredentials credentials = new WebCredentials(userName, password);
+        service.setCredentials(credentials);
+        try {
+            service.autodiscoverUrl(userName);
+       
+            EmailMessage message = new EmailMessage(service);
+            message.setSubject("You've received an encrypted message.");
+            message.setBody(MessageBody.getMessageBodyFromText(messageRequest.messageBody));
+            message.getToRecipients().add(messageRequest.recipient);
+            message.send();
+        }  catch(Exception ex) {
+            return new ResponseEntity(ex.toString(), headers, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity("HAPPY DAY", headers, HttpStatus.OK);
+    }
+}
+
+// Mailrequest class to represent object passed into the controller to send a message to
+final class MailRequest{
+
+    // Message body of the request
+    public String messageBody;
+
+    // Recipeint email address
+    public String recipient;
 }
 
 // Template request class to represent the object passed into the template
