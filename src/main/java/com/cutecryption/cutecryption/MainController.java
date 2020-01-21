@@ -61,7 +61,7 @@ public class MainController {
 
     // Method for sending messages from browser
     @RequestMapping(value="/sendMail", method = RequestMethod.OPTIONS)
-     ResponseEntity<?> collectionOptions(@RequestBody MailRequest messageRequest) 
+     ResponseEntity<?> collectionOptions() 
      {
         final HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
