@@ -51,8 +51,6 @@ public class MainController {
      ResponseEntity<?> rootOptions() 
      {
         final HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Allow-Headers", "*");
        
         return ResponseEntity.ok()
         .allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS)
@@ -65,9 +63,6 @@ public class MainController {
      ResponseEntity<?> collectionOptions() 
      {
         final HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
-        headers.add("Access-Control-Allow-Headers", "*");
-       
         return ResponseEntity.ok()
         .allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS)
         .headers(headers).build();
@@ -92,7 +87,6 @@ public class MainController {
             jsonData = jsonData.replace("##USEREMAIL##", email);
         }
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
         return new ResponseEntity(jsonData, headers, HttpStatus.OK);
     }
 
@@ -100,7 +94,6 @@ public class MainController {
     @PostMapping("/")
     public ResponseEntity postController(@RequestBody com.cutecryption.cutecryption.TemplateRequest templateRequest) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
         // Call the ToDocument() method on the template request object to turn it into a
         // Document object
         final Document requestDoc = templateRequest.ToDocument();
@@ -115,7 +108,6 @@ public class MainController {
     @RequestMapping(value = "/sendMail", method = RequestMethod.POST, consumes= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity mailFunction(@RequestBody MailRequest messageRequest) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Access-Control-Allow-Origin", "*");
         String userName ="cutecryption@outlook.com";
         String password = "V3r9eCrm9UKN";
 
