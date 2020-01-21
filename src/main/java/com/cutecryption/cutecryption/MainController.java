@@ -19,6 +19,7 @@ import com.mongodb.client.MongoClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -111,7 +112,7 @@ public class MainController {
             return null;
         }
     }
-    @PostMapping("/sendMail")
+    @RequestMapping(value = "/sendMail", method = RequestMethod.POST, consumes= MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity mailFunction(@RequestBody MailRequest messageRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
