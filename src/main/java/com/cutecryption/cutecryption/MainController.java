@@ -17,12 +17,14 @@ import com.mongodb.*;
 import com.mongodb.client.*;
 import com.mongodb.client.MongoClient;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 // Controller class for our template controller
@@ -42,6 +44,19 @@ public class MainController {
         final MongoDatabase database = mongoClient.getDatabase("morereal");
         this.templateCollection = database.getCollection("templateCollection");
     }
+    // Method for sending messages from browser
+    @RequestMapping(value="/sendMail", method = RequestMethod.OPTIONS)
+     ResponseEntity<?> collectionOptions() 
+     {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Headers", "*");
+       
+        return ResponseEntity.ok()
+        .allow(HttpMethod.GET, HttpMethod.POST, HttpMethod.OPTIONS)
+        .headers(headers).build();
+		
+     }
 
     // Method for handling the get request to "/" route
     @RequestMapping("/")
@@ -85,8 +100,8 @@ public class MainController {
     public ResponseEntity mailFunction(@RequestBody MailRequest messageRequest) {
         HttpHeaders headers = new HttpHeaders();
         headers.add("Access-Control-Allow-Origin", "*");
-        String userName = "userName";
-        String password = "password";
+        String userName ="cutecryption@outlook.com";
+        String password = "V3r9eCrm9UKN";
 
         if (System.getenv().containsKey("EMAIL_USERNAME")) {
             userName = System.getenv().get("EMAIL_USERNAME");
